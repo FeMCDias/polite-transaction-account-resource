@@ -1,0 +1,1 @@
+# polite-transaction-account-resource
