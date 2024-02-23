@@ -1,5 +1,10 @@
 package politetransaction.store.account;
 
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.util.Base64;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -10,25 +15,28 @@ public class AccountService {
     private AccountRepository accountRepository;
 
     public Account create(Account account) {
-        return accountRepository.save(account);
+        in.hash(calculateHash(in.password()));
+        in.password(null);
+        return accountRepository.save(new AccountModel(in)).to();
     }
 
     public Account read(String id) {
-        return accountRepository.findById(id).orElse(null);
+        return accountRepository.findById(id).map(AccountModel::to).orElse(null);
     }
 
     public Account login (String email, String hash) {
+        String hash = calculateHash(email, hash)
         return accountRepository.findByEmailAndHash(email, hash).orElse(null);
     }
 
-    public Account calculatedHash (String id, String hash) {
-        messageDigest.update(hash.getBytes());
-        byte[] digest = messageDigest.digest();
-        // encode the hash in base 64
-        // TODO
-        return accountRepository.updateHash(id, digest);
-    }
-
-
-    
+    public Account calculateHash (String text){
+        try{
+            MessageDigest digest = MessageDigest.getInstance("SHA-256");
+            byte[] hash = digest.digest(text.getBytes(StandardCharsets.UTF_8));
+            byte[] encoded = Base64.getEncoder().encode(hash);
+            return new String(encoded);
+        } catch (NoSuchAlgorithmException e) {
+        throw new RuntimeException(e);
+        }
+    }    
 }

@@ -1,15 +1,12 @@
 package politetransaction.store.account;
+import java.util.Optional;
 
-public class AccountRepository {
+import org.springframework.data.repository.CrudRepository;
+import org.springframework.stereotype.Repository;
 
-    public Account save(Account account) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'save'");
-    }
+@Repository
+public interface AccountRepository extends CrudRepository<AccountModel, String> {
 
-    public Object findById(String id) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'findById'");
-    }
-
+    Optional<AccountModel> findByEmailAndHash(String email, String hash);
+    
 }
