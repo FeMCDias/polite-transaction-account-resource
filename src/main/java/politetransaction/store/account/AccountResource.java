@@ -1,5 +1,6 @@
 package politetransaction.store.account;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -10,6 +11,9 @@ public class AccountResource implements AccountController{
     public String info(){
         return "Account Info";
     }
+
+    @Autowired
+    private AccountService accountService;
 
     @Override
     public ResponseEntity<AccountOut> create(AccountIn in) {
