@@ -65,9 +65,9 @@ public class AccountResource implements AccountController{
     }
 
     @Override
-    public ResponseEntity<AccountOut> login(Loginin in) {
+    public ResponseEntity<AccountOut> login(LoginIn in) {
         Account account = accountService.login(in.email(), in.password());
-        if account == null) {
+        if (account == null) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         }
         return ResponseEntity.ok(AccountParser.to(account));

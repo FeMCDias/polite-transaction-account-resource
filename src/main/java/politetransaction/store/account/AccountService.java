@@ -14,7 +14,7 @@ public class AccountService {
     @Autowired
     private AccountRepository accountRepository;
 
-    public Account create(Account account) {
+    public Account create(Account in) {
         in.hash(calculateHash(in.password()));
         in.password(null);
         return accountRepository.save(new AccountModel(in)).to();
@@ -24,12 +24,12 @@ public class AccountService {
         return accountRepository.findById(id).map(AccountModel::to).orElse(null);
     }
 
-    public Account login (String email, String hash) {
-        String hash = calculateHash(email, hash)
-        return accountRepository.findByEmailAndHash(email, hash).orElse(null);
+    public Account login (String email, String password) {
+        String hash = calculateHash(password);
+        return accountRepository.findByEmailAndHash(email, hash).map(AccountModel::to).orElse(null);
     }
 
-    public Account calculateHash (String text){
+    public String calculateHash (String text){
         try{
             MessageDigest digest = MessageDigest.getInstance("SHA-256");
             byte[] hash = digest.digest(text.getBytes(StandardCharsets.UTF_8));
