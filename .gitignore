@@ -30,4 +30,5 @@ replay_pid*
 /env
 ./env
 
-/target
+target/
+.DS_Store
