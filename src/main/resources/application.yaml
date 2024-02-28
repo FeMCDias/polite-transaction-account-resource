@@ -1,4 +1,6 @@
 spring:
+  application:
+    name: store-account
   datasource:
     url: ${DATABASE_URL:jdbc:postgresql://localhost:5432/polite_transaction_account}
     username: ${DATABASE_USERNAME:polite_transaction_account}
